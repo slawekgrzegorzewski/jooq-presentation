@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: sgrzegorzewski
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: users
+      changes:
+        - sql:
+            sql: insert into accounts(id, name, balance) values (1, 'konto główne', 1000.0000), (2, 'konto dodatkowe', 500.0000)
+        - sql:
+            sql: |
+              insert into transactions_from_open_banking_api(id, source_account_id, destination_account_id, amount, description) values
+              (1, null, 1, 5000.0000, 'wypłata'),
+              (2, 1, 2, 2000.0000, 'oszczędności'),
+              (3, 1, null, 2500.0000, 'czynsz'),
+              (4, null, 2, 500.0000, 'pożyczka'),
+              (5, 2, 1, 500.0000, 'przekaz środków'),
+              (6, 2, null, 500.0000, 'zwrot pożyczki')
+        - sql:
+            sql: |
+              insert into transactions_from_user(id, source_account_id, destination_account_id, amount, description) values
+              (1, null, 1, 5000.0000, 'wypłata'),
+              (2, 1, 2, 2500.0000, 'czynsz'),
+              (3, 2, null, 500.0000, 'zwrot pożyczki')
